@@ -96,9 +96,9 @@ jobs:
       SECRET_KEY: ${{ secrets.SECRET_KEY }}
       REDIS_URL: ${{ secrets.REDIS_URL }}
       REDIS_PREFIX: ${{ secrets.REDIS_PREFIX }}
-      COURSE_TABLE_CACHE_TIME: ${{ variables.COURSE_TABLE_CACHE_TIME }}
-      ENABLE_REMINDER: ${{ variables.ENABLE_REMINDER }}
-      REMINDER_SECONDS: ${{ variables.REMINDER_SECONDS }}
+      COURSE_TABLE_CACHE_TIME: ${{ secrets.COURSE_TABLE_CACHE_TIME }}
+      ENABLE_REMINDER: ${{ secrets.ENABLE_REMINDER }}
+      REMINDER_SECONDS: ${{ secrets.REMINDER_SECONDS }}
     runs-on: ubuntu-latest
     needs: build
     steps:
