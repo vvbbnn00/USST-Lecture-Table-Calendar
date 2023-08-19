@@ -93,7 +93,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
             >USST Lecture Table Calendar</Heading>
 
             <Text as="div" className={"pt-5 pb-5 w-fit "}>
-                在此页面输入您预先设置的<Code>安全密钥</Code>，并选择课表的学期，点击<Code>生成订阅链接</Code>
+                在此页面输入您预先设置的<Code>安全密钥</Code>，并选择课表的学期，点击<Code>生成链接</Code>
                 以获得课表的日历链接，手机扫码或复制即可获得相应日历文件。通过该链接获得的课表将<strong>时刻保持更新</strong>。
             </Text>
 
@@ -171,7 +171,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             onClick={handleGenerateLink}
                             variant="surface"
                         >
-                            <BookmarkIcon width="16" height="16"/> 生成订阅链接
+                            <BookmarkIcon width="16" height="16"/> 生成链接
                         </Button>
                         {/* 清除缓存提示框 */}
                         <AlertDialog.Root>
