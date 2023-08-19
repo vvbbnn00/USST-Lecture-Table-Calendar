@@ -261,7 +261,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                 <Separator my="3" size="4"/>
                 <Text as={"div"}>
                     Powered by{' '}
-                    <Link href="#" className="underline">usst-lecture-table-calendar</Link>
+                    <Link href="https://github.com/vvbbnn00/USST-Lecture-Table-Calendar" className="underline">USST-Lecture-Table-Calendar</Link>
                 </Text>
                 <Text>
                     Made with ❤️ by{' '}
