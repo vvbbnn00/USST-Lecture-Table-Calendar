@@ -1,7 +1,7 @@
 // 登录方式配置文件
 // 请勿将用户名和密码直接写在此处，应使用环境变量获取
 
-export default {
+module.exports = {
     // 登录方式
     loginMethod: process.env.LOGIN_METHOD || 'jwgl', // jwgl: 教务管理系统登录, ids: 统一身份认证登录
     // 教务管理系统登录配置

@@ -1,6 +1,6 @@
 // 系统配置信息
 
-export default {
+module.exports = {
     // 安全密钥，强烈建议设置，对应环境变量 SECRET_KEY
     secret_key: process.env.SECRET_KEY || 'usst-lecture-table-calendar',
     // 课表信息缓存时间，单位为秒，对应环境变量 COURSE_TABLE_CACHE_TIME

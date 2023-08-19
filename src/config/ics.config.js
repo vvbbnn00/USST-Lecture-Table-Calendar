@@ -1,6 +1,6 @@
 // 日历文件配置信息
 
-export default {
+module.exports = {
     // 是否开启提醒功能，对应环境变量 ENABLE_REMINDER
     enableReminder: process.env.ENABLE_REMINDER || true,
     // 提前多少秒提醒，对应环境变量 REMINDER_SECONDS
