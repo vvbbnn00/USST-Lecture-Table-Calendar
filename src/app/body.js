@@ -16,9 +16,13 @@ import {
     Link,
     Checkbox,
     Grid,
-    Separator, Code
+    Separator,
+    Code,
+    AlertDialog,
+    Strong,
+    Callout
 } from '@radix-ui/themes';
-import {BookmarkIcon, CopyIcon, Link1Icon, LockClosedIcon} from "@radix-ui/react-icons";
+import {BookmarkIcon, CopyIcon, Link1Icon, LockClosedIcon, InfoCircledIcon, TrashIcon} from "@radix-ui/react-icons";
 
 export default function Home({schoolYearMap, semesterMap, currentSchoolYear, currentSemester}) {
 
@@ -29,7 +33,8 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
     const [link, setLink] = useState('');
     const [maskedLink, setMaskedLink] = useState('');
     const [textLink, setTextLink] = useState('');
-    const qrcodeRef = useRef(null);
+    const [cacheButtonLoading, setCacheButtonLoading] = useState(false);
+    const qrcodeRef = useRef();
     const clipboard = useClipboard();
 
     const
@@ -47,6 +52,38 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
             setTextLink(`${baseLink}?${params.toString()}`);
         };
 
+    const handleClearCache = () => {
+        setCacheButtonLoading(true);
+        const baseLink = `${window.location.protocol}//${window.location.host}/api/clear_cache`;
+        const params = new URLSearchParams();
+        params.append('secret_key', secretKey);
+        if (!latest) {
+            params.append('school_year', schoolYear);
+            params.append('semester', semester);
+        } else {
+            params.append('school_year', currentSchoolYear);
+            params.append('semester', currentSemester);
+        }
+        fetch(`${baseLink}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            res.json().then(data => {
+                if (data.code === 200) {
+                    toast.success('清除缓存成功');
+                } else {
+                    toast.error('清除缓存失败: ' + data.message);
+                }
+            })
+        }).catch(e => {
+            toast.error('请求失败');
+        }).finally(() => {
+            setCacheButtonLoading(false);
+        });
+    }
+
     return (
         <main className={"w-9/12 m-auto mt-10 lg:w-7/12 xl:w-5/12"}>
             <Toaster/>
@@ -54,10 +91,21 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                 as="h1"
                 className={"mb-4 rt-r-size-8"}
             >USST Lecture Table Calendar</Heading>
+
             <Text as="div" className={"pt-5 pb-5 w-fit "}>
                 在此页面输入您预先设置的<Code>安全密钥</Code>，并选择课表的学期，点击<Code>生成订阅链接</Code>
                 以获得课表的日历链接，手机扫码或复制即可获得相应日历文件。通过该链接获得的课表将<strong>时刻保持更新</strong>。
             </Text>
+
+            <Callout.Root color="red" className={"mb-5"}>
+                <Callout.Icon>
+                    <InfoCircledIcon/>
+                </Callout.Icon>
+                <Callout.Text>
+                    若您的服务器假设于校外，且您的服务器<Strong>未使用校园VPN</Strong>，则在
+                    <Strong>当日23:00后</Strong>很可能<Strong>无法访问教务系统</Strong>！
+                </Callout.Text>
+            </Callout.Root>
 
             <Box className={"p-3 backdrop-blur bg-gray-50 border-2 rounded mb-5"}>
                 <Flex direction="column" gap="3" className="mb-4">
@@ -118,12 +166,50 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                         </Grid>
                     )}
 
-                    <Button
-                        onClick={handleGenerateLink}
-                        variant="surface"
-                    >
-                        <BookmarkIcon width="16" height="16"/> 生成订阅链接
-                    </Button>
+                    <Grid columns="2" gap="3" width="auto">
+                        <Button
+                            onClick={handleGenerateLink}
+                            variant="surface"
+                        >
+                            <BookmarkIcon width="16" height="16"/> 生成订阅链接
+                        </Button>
+                        {/* 清除缓存提示框 */}
+                        <AlertDialog.Root>
+                            <AlertDialog.Trigger>
+                                <Button
+                                    color="red"
+                                    variant="surface"
+                                    disabled={cacheButtonLoading}
+                                >
+                                    <TrashIcon width="16" height="16"/> 清除缓存
+                                </Button>
+                            </AlertDialog.Trigger>
+                            <AlertDialog.Content style={{maxWidth: 450}}>
+                                <AlertDialog.Title>清除缓存</AlertDialog.Title>
+                                <AlertDialog.Description size="2">
+                                    清除缓存操作只会清除您当前选定的学年学期的课表缓存，不会影响其他学年学期的课表缓存。
+                                    <Strong>若您没有指定学年学期，则将清除当前学年学期的课表缓存。</Strong><br/>
+                                    清除缓存需要您输入正确的<Code>安全密钥</Code>方可进行。<br/>
+                                    清除缓存后，再次请求日历文件时，服务器将从教务系统更新课表，这可能需要一定时间。<br/>
+                                    若您已经了解清除缓存的后果，点击<Code>确认</Code>以清除缓存。
+                                </AlertDialog.Description>
+
+                                <Flex gap="3" mt="4" justify="end">
+                                    <AlertDialog.Cancel>
+                                        <Button variant="soft" color="gray">
+                                            取消
+                                        </Button>
+                                    </AlertDialog.Cancel>
+                                    <AlertDialog.Action>
+                                        <Button variant="solid" color="red" onClick={handleClearCache}>
+                                            确认
+                                        </Button>
+                                    </AlertDialog.Action>
+                                </Flex>
+                            </AlertDialog.Content>
+                        </AlertDialog.Root>
+                    </Grid>
+
                 </Flex>
             </Box>
 
@@ -163,6 +249,10 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                     >
                         <QRCodeSVG value={link} size="250" fgColor="#000" ref={qrcodeRef}/>
                     </Box>
+
+                    <Text className={"mt-5 text-sm"}>
+                        * 点击二维码即可下载日历文件
+                    </Text>
                 </Box>
             )}
 
