@@ -3,7 +3,7 @@
 
 export default {
     // 登录方式
-    loginMethod: 'jwgl', // jwgl: 教务管理系统登录, ids: 统一身份认证登录
+    loginMethod: process.env.LOGIN_METHOD || 'jwgl', // jwgl: 教务管理系统登录, ids: 统一身份认证登录
     // 教务管理系统登录配置
     jwgl: {
         // 登录地址
