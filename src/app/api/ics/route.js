@@ -8,17 +8,10 @@ export async function GET(request) {
     const timeInfo = await getTimeInformation();
     let {school_year, semester, secret_key} = Object.fromEntries(params);
 
-    if (!secret_key) {
+    if (secret_key !== systemConfig.secret_key) {
         return NextResponse.json({
             code: 401,
             message: '401 Unauthorized.'
-        })
-    }
-
-    if (secret_key !== systemConfig.secret_key) {
-        return NextResponse.json({
-            code: 403,
-            message: '403 Forbidden.'
         })
     }
 

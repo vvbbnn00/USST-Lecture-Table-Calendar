@@ -12,5 +12,9 @@ export async function getCache(key) {
 }
 
 export async function setCache(key, value, expire) {
-    await kv.set(prefix + key, value, 'EX', expire)
+    await kv.set(prefix + key, value, 'EX', expire);
+}
+
+export async function delCache(key) {
+    await kv.del(prefix + key);
 }

@@ -2,6 +2,8 @@
 
 import {useRef, useState} from 'react';
 import {QRCodeSVG} from "qrcode.react";
+import {useClipboard} from 'use-clipboard-copy'
+import toast, {Toaster} from 'react-hot-toast';
 
 import {
     Box,
@@ -28,6 +30,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
     const [maskedLink, setMaskedLink] = useState('');
     const [textLink, setTextLink] = useState('');
     const qrcodeRef = useRef(null);
+    const clipboard = useClipboard();
 
     const
         handleGenerateLink = () => {
@@ -46,6 +49,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
 
     return (
         <main className={"w-9/12 m-auto mt-10 lg:w-7/12 xl:w-5/12"}>
+            <Toaster/>
             <Heading
                 as="h1"
                 className={"mb-4 rt-r-size-8"}
@@ -138,7 +142,10 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             readOnly/>
                         <TextField.Slot>
                             <Button
-                                onClick={() => navigator.clipboard.writeText(link)}
+                                onClick={() => {
+                                    clipboard.copy(link);
+                                    toast.success('复制成功');
+                                }}
                                 size={"1"}
                                 variant="ghost"
                                 color="gray"
@@ -148,7 +155,12 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             </Button>
                         </TextField.Slot>
                     </TextField.Root>
-                    <Box className={"m-2 flex items-center justify-center mt-5"}>
+                    <Box
+                        className={"m-2 flex items-center justify-center mt-5 cursor-pointer"}
+                        onClick={() => {
+                            window.open(link);
+                        }}
+                    >
                         <QRCodeSVG value={link} size="250" fgColor="#000" ref={qrcodeRef}/>
                     </Box>
                 </Box>
@@ -163,7 +175,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                 </Text>
                 <Text>
                     Made with ❤️ by{' '}
-                    <Link href="#" className="underline">vvbbnn00</Link>
+                    <Link href="https://github.com/vvbbnn00" className="underline">vvbbnn00</Link>
                 </Text>
             </footer>
         </main>
