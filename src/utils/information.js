@@ -8,6 +8,8 @@ import apiConfig from "@/config/api.config";
 import systemConfig from "@/config/system.config";
 import loginConfig from "@/config/login.config";
 
+process.env.TZ = 'Asia/Shanghai' // 设置时区
+
 /**
  * 获取整体时间信息，包括学期信息、放假安排等
  * @returns {Promise<any>}

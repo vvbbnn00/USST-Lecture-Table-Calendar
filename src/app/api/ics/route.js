@@ -3,6 +3,8 @@ import systemConfig from "@/config/system.config";
 import {getCachedLectureTable, getTimeInformation} from "@/utils/information";
 import {generateIcsFile} from "@/utils/lecture_table";
 
+process.env.TZ = 'Asia/Shanghai' // 设置时区
+
 export async function GET(request) {
     const params = new URL(request.url).searchParams
     const timeInfo = await getTimeInformation();

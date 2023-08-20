@@ -1,6 +1,8 @@
 import {addDays, format} from 'date-fns';
 import {getTimeInformation} from "@/utils/information";
 
+process.env.TZ = 'Asia/Shanghai' // 设置时区
+
 export async function calcDate(weekNum, weekday, baseDate) {
     const {
         adjustDate: ADJUST_DATE,
