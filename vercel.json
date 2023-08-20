@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "src/pages/api/ics/index.js": {
+      "maxDuration": 30
+    }
+  }
+}

@@ -8,8 +8,6 @@ import apiConfig from "@/config/api.config";
 import systemConfig from "@/config/system.config";
 import loginConfig from "@/config/login.config";
 
-process.env.TZ = 'Asia/Shanghai' // 设置时区
-
 /**
  * 获取整体时间信息，包括学期信息、放假安排等
  * @returns {Promise<any>}
@@ -33,7 +31,7 @@ export async function getTimeInformation() {
             vacationDate: data['vacation_date'],
         }
 
-        setCache('BASIC:time_info', JSON.stringify(retData), 86400).then(r => {
+        setCache('BASIC:time_info', JSON.stringify(retData), 86400).then(() => {
             console.log('缓存时间信息成功')
         });
         return retData;
@@ -118,8 +116,8 @@ export async function getCachedLectureTable(school_year, semester){
         schoolNumber: school_number,
         studentName: stuInfo['xm'],
     }
-    setCache(`LECTURE_TABLE:${school_year}:${semester}`, JSON.stringify(retData), systemConfig.course_table_cache_time).then(r => {
-        console.log('缓存课表成功, ', school_year, semester, '有效期', systemConfig.course_table_cache_time, '秒' )
+    setCache(`LECTURE_TABLE:${school_year}:${semester}`, JSON.stringify(retData), systemConfig.courseTableCacheTime).then(() => {
+        console.log('缓存课表成功, ', school_year, semester, '有效期', systemConfig.courseTableCacheTime, '秒' )
     });
     return retData;
 }

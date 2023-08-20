@@ -1,8 +1,13 @@
 import {addDays, format} from 'date-fns';
 import {getTimeInformation} from "@/utils/information";
 
-process.env.TZ = 'Asia/Shanghai' // 设置时区
-
+/**
+ * 计算日期
+ * @param weekNum
+ * @param weekday
+ * @param baseDate
+ * @returns {Promise<{dateStr: string, adjustDate: (*|null), adjustDateParent: null, isVacation: *, datetimeObj: Date, weekNumber: number}>}
+ */
 export async function calcDate(weekNum, weekday, baseDate) {
     const {
         adjustDate: ADJUST_DATE,
@@ -40,6 +45,12 @@ export async function calcDate(weekNum, weekday, baseDate) {
     };
 }
 
+/**
+ * 计算时间
+ * @param startKc
+ * @param endKc
+ * @returns {Promise<{start: number, end: number}>}
+ */
 export async function calcTime(startKc, endKc) {
     const {
         timeTable: TIME_TABLE
@@ -57,6 +68,11 @@ export async function calcTime(startKc, endKc) {
     };
 }
 
+/**
+ * 日期转数组
+ * @param date
+ * @returns {(number|number)[]}
+ */
 export function dateToArray(date) {
     const dateObj = new Date(date);
 

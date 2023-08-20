@@ -102,7 +102,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                     <InfoCircledIcon/>
                 </Callout.Icon>
                 <Callout.Text>
-                    若您的服务器假设于校外，且您的服务器<Strong>未使用校园VPN</Strong>，则在
+                    若您的服务器架设于校外，且您的服务器<Strong>未使用校园VPN</Strong>，则在
                     <Strong>当日23:00后</Strong>很可能<Strong>无法访问教务系统</Strong>！
                 </Callout.Text>
             </Callout.Root>

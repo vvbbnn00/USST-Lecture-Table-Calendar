@@ -25,6 +25,12 @@ class Jwgl_Login {
         };
     }
 
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @returns {Promise<(*|CookieJar)[]>}
+     */
     async login(username, password) {
         const loginPage = await this.session.get(loginConfig.jwgl.loginUrl);
         const dom = new JSDOM(loginPage.data);

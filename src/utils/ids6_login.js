@@ -26,6 +26,11 @@ class Ids6_Login {
         };
     }
 
+    /**
+     * 检查是否需要验证码
+     * @param username
+     * @returns {Promise<any>}
+     */
     async checkNeedCaptcha(username) {
         const requestUrl = `${loginConfig.ids.needCaptchaUrl}?username=${username}&_=${Date.now()}`;
         try {
@@ -40,6 +45,13 @@ class Ids6_Login {
         }
     }
 
+    /**
+     * 登录
+     * @param username
+     * @param password
+     * @param captchaResponse
+     * @returns {Promise<CookieJar[]>}
+     */
     async login(username, password, captchaResponse = null) {
         try {
             const pageResponse = await this.session.get(loginConfig.ids.loginUrl, {
@@ -131,6 +143,12 @@ class Ids6_Login {
         }
     }
 
+    /**
+     * 登录教务管理系统
+     * @param username
+     * @param password
+     * @returns {Promise<(CookieJar|any)[]>}
+     */
     async loginIntoJwgl(username, password) {
         const [realName, cookieJar] = await this.login(username, password);
         const ret = await this.session.get(loginConfig.ids.jwglUrl, {
@@ -162,6 +180,10 @@ class Ids6_Login {
         }
     }
 
+    /**
+     * 获取验证码
+     * @returns {Promise<string>}
+     */
     async getCaptcha() {
         try {
             const response = await this.session.get(loginConfig.ids.captchaUrl, {
@@ -181,6 +203,11 @@ class Ids6_Login {
         }
     }
 
+    /**
+     * 识别验证码
+     * @param captchaImg
+     * @returns {Promise<any>}
+     */
     async solveCaptcha(captchaImg) {
         try {
             const response = await this.session.post(apiConfig.captcha.ids, captchaImg, {
