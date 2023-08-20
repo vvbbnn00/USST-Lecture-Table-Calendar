@@ -1,4 +1,4 @@
-<center><h1>USST Lecture Table Calendar</h1></center>
+<div style="text-align: center"><h1>USST Lecture Table Calendar</h1></div>
 
 > 请注意，该项目是一个完全**非官方**、**非商业**的项目，由于本人能力有限，因此无法保证该项目的稳定性和安全性，
 同时，也**无法提供一对一的技术支持**。如果你对该项目有任何疑问或建议，可以在
