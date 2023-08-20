@@ -117,9 +117,15 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             placeholder={'安全密钥'}
                             type="password"
                             value={secretKey}
-                            onChange={(e) => {
+                            onInput={(e) => {
                                 setSecretKey(e.target.value);
-                            }}/>
+                            }}
+                            onKeyPressCapture={(e)=>{
+                                if(e.key==='Enter'){
+                                    handleGenerateLink();
+                                }
+                            }}
+                        />
                     </TextField.Root>
 
                     <Flex>

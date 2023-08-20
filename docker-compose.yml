@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  app:
+    container_name: app
+    build: .
+    env_file:
+      - .env
+      - .env.production.local
+    restart: always
+    ports:
+      - "3000:3000"
+
+  redis:
+    container_name: redis
+    image: redis:7.2.0-alpine
+    restart: always
