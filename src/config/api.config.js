@@ -7,7 +7,7 @@ module.exports = {
         ids: 'https://wlkcard.slact.cn/ai/captcha/ids'
     },
     // 学期及放假调休安排 API
-    time_info: 'https://vvbbnn00.cn/welink-card-static/usst_vacation.json',
+    time_info: 'https://vvbbnn00.github.io/USST-Lecture-Table-Calendar/date_config.json',
     // 课程表 API
     course_table: 'https://jwgl.usst.edu.cn/jwglxt/kbcx/xskbcx_cxXsgrkb.html?gnmkdm=N2151',
     // API 请求头

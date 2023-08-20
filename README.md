@@ -2,10 +2,7 @@
 >
 > 该项目**仅适用于**对计算机技术有一定了解的同学，如果你不了解`Node.js`、`Docker`技术，也没有兴趣学习，那么该项目可能不适合您。
 
-> 📝 提示：该项目是一个完全**非官方**、**非商业**的项目，由于本人能力有限，因此无法保证该项目的稳定性和安全性，同时，也*
-*无法提供一对一的技术支持**
-> 。如果你对该项目有任何疑问或建议，可以在 [Issues](https://github.com/vvbbnn00/USST-Lecture-Table-Calendar/issues)
-> 中提出，不过无法保证及时回复。
+> 📝 提示：该项目是一个完全**非官方**、**非商业**的项目，由于本人能力有限，因此无法保证该项目的稳定性和安全性，同时，也**无法提供一对一的技术支持**。如果你对该项目有任何疑问或建议，可以在 [Issues](https://github.com/vvbbnn00/USST-Lecture-Table-Calendar/issues)中提出，不过无法保证及时回复。
 
 ## 🤔 这是什么？
 
@@ -59,7 +56,7 @@ redis://default:<password>@<Public endpoint>
 若您在注册中遇到困难，可以参考[这篇文章(英文)](https://medium.com/swlh/host-and-use-redis-for-free-b70d65a13edd)。
 
 2、点击下方按钮，使用`GitHub`账号登录`Vercel`
-，并按照提示完成部署。部署过程中会要求输入环境变量，具体填写方式参照[环境变量](#环境变量)一节。
+，并按照提示完成部署。部署过程中会要求输入环境变量，具体填写方式参照[环境变量](#-环境变量)一节。
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/vvbbnn00/USST-Lecture-Table-Calendar&env=LOGIN_METHOD&env=JWGL_USERNAME&env=JWGL_PASSWORD&env=IDS_USERNAME&env=IDS_PASSWORD&env=SECRET_KEY&env=ENABLE_REMINDER&env=REMINDER_SECONDS&env=COURSE_TABLE_CACHE_TIME&env=REDIS_URL&env=REDIS_PREFIX)
 
@@ -84,7 +81,7 @@ PS：您也可以自定义您的项目的`域名`，具体操作参照[官方文
 git clone https://github.com/vvbbnn00/USST-Lecture-Table-Calendar.git
 ```
 
-2、进入项目目录，编辑`.env`文件配置基础设置，并创建`.env.production.local`文件配置机密设置。具体参照[环境变量](#环境变量)一节。
+2、进入项目目录，编辑`docker.env`文件配置基础设置，并创建`docker.env.local`文件配置机密设置。具体参照[环境变量](#-环境变量)一节。
 
 3、构建并启动容器（项目将在`3000`端口运行，请确保该端口未被占用且已开放）
 
@@ -112,7 +109,7 @@ cd USST-Lecture-Table-Calendar
 npm install
 ```
 
-3、编辑`.env`文件配置基础设置，并创建`.env.production.local`文件配置机密设置。具体参照[环境变量](#环境变量)一节。
+3、新建`.env`文件，配置`docker.env`中出现的所有配置。具体参照[环境变量](#-环境变量)一节。
 
 4、构建项目
 
@@ -134,19 +131,19 @@ npm run start
 的构建模板要求一定要填写全部环境变量，因此需要麻烦复制粘贴一下默认值。若您使用的是`Docker-compose`或`Node.js`
 ，则可以根据您的需求选择性填写。
 
-| 环境变量                      | 是否必填                      | 默认值     | 说明                                                                                   |
-|---------------------------|---------------------------|---------|--------------------------------------------------------------------------------------|
-| `REDIS_URL`               | 是                         | 无       | `Redis`服务的`URL`，格式为`redis://<username>:<password>@<host>:<port>`，具体参照[快速上手](#快速上手)一节 |
-| `SECRET_KEY`              | 是                         | 无       | 用于保护您的课表不被泄露，请牢记该秘钥，在获取日历文件时将会用到                                                     |
-| `LOGIN_METHOD`            | 是                         | `jwgl`  | 登录方式，可选值为`ids`或`jwgl`，分别对应`统一身份认证系统`和`教务管理系统`（二者的密码默认是不一样的，请注意区分）                    |
-| `JWGL_USERNAME`           | 若`LOGIN_METHOD`为`jwgl`则必填 | 无       | 教务管理系统用户名                                                                            |
-| `JWGL_PASSWORD`           | 若`LOGIN_METHOD`为`jwgl`则必填 | 无       | 教务管理系统密码                                                                             |
-| `IDS_USERNAME`            | 若`LOGIN_METHOD`为`ids`则必填  | 无       | 统一身份认证系统用户名                                                                          |
-| `IDS_PASSWORD`            | 若`LOGIN_METHOD`为`ids`则必填  | 无       | 统一身份认证系统密码                                                                           |
-| `ENABLE_REMINDER`         | 否                         | `true`  | 是否启用提醒功能，可选值为`true`或`false`。开启后将在上课前`REMINDER_SECONDS`秒提醒上课                          |
-| `REMINDER_SECONDS`        | 否                         | `900`   | 提醒时间，单位为秒，即上课前多少秒提醒上课。默认为`900`，即提前`10`分钟提醒上课。                                        |
-| `COURSE_TABLE_CACHE_TIME` | 否                         | `86400` | 课程表缓存时间，单位为秒，即多少秒更新一次课程表。默认为`86400`，即每天更新一次课程表。                                      |
-| `REDIS_PREFIX`            | 否                         | `ULTC:` | `Redis`缓存的前缀，用于区分不同的项目，避免冲突。若您同时部署了多个该项目，可以修改该值。                                     |
+| 环境变量                      | 是否必填                      | 默认值     | 说明                                                                                    |
+|---------------------------|---------------------------|---------|---------------------------------------------------------------------------------------|
+| `REDIS_URL`               | 是                         | 无       | `Redis`服务的`URL`，格式为`redis://<username>:<password>@<host>:<port>`，具体参照[快速上手](#-快速上手)一节 |
+| `SECRET_KEY`              | 是                         | 无       | 用于保护您的课表不被泄露，请牢记该秘钥，在获取日历文件时将会用到                                                      |
+| `LOGIN_METHOD`            | 是                         | `jwgl`  | 登录方式，可选值为`ids`或`jwgl`，分别对应`统一身份认证系统`和`教务管理系统`（二者的密码默认是不一样的，请注意区分）                     |
+| `JWGL_USERNAME`           | 若`LOGIN_METHOD`为`jwgl`则必填 | 无       | 教务管理系统用户名                                                                             |
+| `JWGL_PASSWORD`           | 若`LOGIN_METHOD`为`jwgl`则必填 | 无       | 教务管理系统密码                                                                              |
+| `IDS_USERNAME`            | 若`LOGIN_METHOD`为`ids`则必填  | 无       | 统一身份认证系统用户名                                                                           |
+| `IDS_PASSWORD`            | 若`LOGIN_METHOD`为`ids`则必填  | 无       | 统一身份认证系统密码                                                                            |
+| `ENABLE_REMINDER`         | 否                         | `true`  | 是否启用提醒功能，可选值为`true`或`false`。开启后将在上课前`REMINDER_SECONDS`秒提醒上课                           |
+| `REMINDER_SECONDS`        | 否                         | `900`   | 提醒时间，单位为秒，即上课前多少秒提醒上课。默认为`900`，即提前`10`分钟提醒上课。                                         |
+| `COURSE_TABLE_CACHE_TIME` | 否                         | `86400` | 课程表缓存时间，单位为秒，即多少秒更新一次课程表。默认为`86400`，即每天更新一次课程表。                                       |
+| `REDIS_PREFIX`            | 否                         | `ULTC:` | `Redis`缓存的前缀，用于区分不同的项目，避免冲突。若您同时部署了多个该项目，可以修改该值。                                      |
 
 ## 📅 导入日历
 

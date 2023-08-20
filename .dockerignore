@@ -5,7 +5,7 @@ npm-debug.log
 README.md
 .next
 .git
-.env
+docker.env
 images
 docs
 ```

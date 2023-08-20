@@ -5,8 +5,8 @@ services:
     container_name: app
     build: .
     env_file:
-      - .env
-      - .env.production.local
+      - docker.env
+      - docker.env.local
     restart: always
     ports:
       - "3000:3000"
