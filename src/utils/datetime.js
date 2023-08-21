@@ -1,6 +1,5 @@
 import {addDays, format} from 'date-fns';
-
-process.env.TZ = 'Asia/Shanghai'; // 设置时区
+process.env.TZ = 'Asia/Shanghai' // 设置时区
 
 class DatetimeUtil {
     constructor(timeInfo) {

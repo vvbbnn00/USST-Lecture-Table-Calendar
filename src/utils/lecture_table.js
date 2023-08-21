@@ -2,6 +2,7 @@ import {createEvents, ReturnObject} from 'ics';
 import DatetimeUtil from "@/utils/datetime";
 import {getTimeInformation} from "@/utils/information";
 import icsConfig from "@/config/ics.config";
+process.env.TZ = 'Asia/Shanghai' // 设置时区
 
 /**
  * 生成ics文件
