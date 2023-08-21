@@ -35,3 +35,4 @@ docker.env.local
 next-env.d.ts
 
 .idea
+/public/date_config.json
