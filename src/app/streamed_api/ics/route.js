@@ -2,6 +2,8 @@ import {getCachedLectureTable, getTimeInformation} from "@/utils/information";
 import {generateIcsFile} from "@/utils/lecture_table";
 import {authCheckMiddleware} from "@/utils/middleware";
 
+export const runtime = 'edge'
+
 function iteratorToStream(iterator, headers) {
     return new ReadableStream({
             async pull(controller) {
@@ -18,7 +20,7 @@ function iteratorToStream(iterator, headers) {
 
 const encoder = new TextEncoder()
 
-async function* makeIterator(school_year, semester) {
+async function* makeIterator(school_year, semester, timeInfo) {
     // 为防止504，先返回一个空行
     yield encoder.encode('\n')
 
@@ -31,7 +33,7 @@ async function* makeIterator(school_year, semester) {
             }))
             return
         }
-        const icsObj = await generateIcsFile(lectureTable);
+        const icsObj = await generateIcsFile(lectureTable, timeInfo);
         if (icsObj.error) {
             console.log(icsObj.error)
             yield encoder.encode(JSON.stringify({
@@ -111,7 +113,7 @@ export async function GET(req) {
         'Content-Type': 'text/calendar; charset=utf-8',
     }
 
-    const iterator = makeIterator(school_year, semester)
+    const iterator = makeIterator(school_year, semester, timeInfo)
     const stream = iteratorToStream(iterator, headers)
 
     return new Response(stream, {

@@ -1,13 +1,15 @@
 import systemConfig from "@/config/system.config"
 import requestIp from 'request-ip'
+import {getCacheFunc} from "@/utils/cache";
 
-const {getCache, setCache} = require('@/utils/redis')
+const {getCache, setCache} = getCacheFunc();
 
 /**
  * 鉴权函数，判断是否有权限访问
  * @param request 请求
  */
 async function isAuthenticated(request) {
+
     if (!systemConfig.secretKey) {
         return {
             'ip': null,

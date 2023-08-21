@@ -23,6 +23,7 @@ export async function getCache(key) {
     if (!key) {
         return null;
     }
+    console.debug('获取缓存', prefix + key)
     return kv.get(prefix + key);
 }
 

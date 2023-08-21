@@ -6,6 +6,8 @@ module.exports = {
     loginMethod: process.env.LOGIN_METHOD || 'jwgl', // jwgl: 教务管理系统登录, ids: 统一身份认证登录
     // 教务管理系统登录配置
     jwgl: {
+        // 教务管理系统基础地址，用于设置 cookie
+        baseUrl: 'https://jwgl.usst.edu.cn/jwglxt/',
         // 登录地址
         loginUrl: 'https://jwgl.usst.edu.cn/jwglxt/xtgl/login_slogin.html',
         // 查询是否登录成功的地址

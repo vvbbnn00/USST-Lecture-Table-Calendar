@@ -32,7 +32,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
     const [schoolYear, setSchoolYear] = useState(currentSchoolYear);
     const [semester, setSemester] = useState(currentSemester);
     const [latest, setLatest] = useState(true);
-    const [useStreamed, setUseStreamed] = useState(true);
+    const [useStreamed, setUseStreamed] = useState(false);
     const [link, setLink] = useState('');
     const [maskedLink, setMaskedLink] = useState('');
     const [textLink, setTextLink] = useState('');
@@ -163,8 +163,8 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                                                 Functions</code>有
                                                 <code>10s</code>的最大执行时间限制，因此，如果您的课表较大，可能会导致
                                                 <code>Serverless Functions</code>执行超时，从而导致请求失败。为了解决这个问题，
-                                                我们提供了<code>流式API</code>。流式API会允许执行最多<code>30s</code>，
-                                                因此，在课表较大的情况下，建议您使用流式API。
+                                                我们提供了<code>流式API</code>。流式API没有最大执行时间限制，但由于部署结构的限制，
+                                                无法使用缓存数据，每次请求都需要从教务系统获取课表数据，因此，流式API的响应速度可能会比普通API慢。
                                             </Text>
                                         </Popover.Content>
                                     </Popover.Root>

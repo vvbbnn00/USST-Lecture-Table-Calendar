@@ -1,12 +1,11 @@
-import {getCache, setCache} from './redis'
-import axios from 'axios';
-import {wrapper} from 'axios-cookiejar-support';
-
-wrapper(axios);
+import makeFetchCookie from 'fetch-cookie'
 
 import apiConfig from "@/config/api.config";
 import systemConfig from "@/config/system.config";
 import loginConfig from "@/config/login.config";
+import {getCacheFunc} from "@/utils/cache";
+
+const {getCache, setCache} = getCacheFunc();
 
 /**
  * 获取整体时间信息，包括学期信息、放假安排等
@@ -18,7 +17,9 @@ export async function getTimeInformation() {
         return JSON.parse(cacheData);
     }
     try {
-        const res = await fetch(apiConfig.time_info);
+        const res = await fetch(apiConfig.time_info, {
+            cache: 'no-cache',
+        });
         const data = await res.json()
         const retData = {
             schoolYearMap: data['school_year_map'],
@@ -32,7 +33,7 @@ export async function getTimeInformation() {
         }
 
         setCache('BASIC:time_info', JSON.stringify(retData), 86400).then(() => {
-            console.log('缓存时间信息成功')
+            process.env.NEXT_RUNTIME === 'nodejs' && console.log('缓存时间信息成功')
         });
         return retData;
     } catch (e) {
@@ -50,10 +51,7 @@ export async function getTimeInformation() {
  * @returns {Promise<void>}
  */
 export async function getRawLectureTable(school_year, semester, cookieJar) {
-    const axiosInstance = axios.create({
-        jar: cookieJar,
-        withCredentials: true,
-    });
+    const axiosInstance = makeFetchCookie(fetch, cookieJar);
     const header = {
         'User-Agent': apiConfig.edge_user_agent,
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -64,12 +62,16 @@ export async function getRawLectureTable(school_year, semester, cookieJar) {
         kzlx: 'cx'
     }
 
-    const ret = await axiosInstance.post(apiConfig.course_table, requestForm, {
+    const ret = await (await axiosInstance(apiConfig.course_table, {
         headers: header,
-    });
+        method: 'POST',
+        body: new URLSearchParams(requestForm),
+        cache: 'no-cache',
+        credentials: 'include',
+    })).json();
 
-    if (ret.data.kbList && ret.data.kbList.length > 0) {
-        return ret.data.kbList;
+    if (ret['kbList'] && ret['kbList'].length > 0) {
+        return ret['kbList'];
     }
 
     throw new Error('获取课表失败');
@@ -82,7 +84,7 @@ export async function getRawLectureTable(school_year, semester, cookieJar) {
  * @param semester
  * @returns {Promise<{lastUpdate: number, studentName, schoolYear, semester, lectureTable: void, schoolNumber}|any>}
  */
-export async function getCachedLectureTable(school_year, semester){
+export async function getCachedLectureTable(school_year, semester) {
     // 检查缓存
     const cacheData = await getCache(`LECTURE_TABLE:${school_year}:${semester}`);
     if (cacheData) {
@@ -118,8 +120,9 @@ export async function getCachedLectureTable(school_year, semester){
         schoolNumber: school_number,
         studentName: stuInfo['xm'],
     }
+    console.log('获取课表成功')
     setCache(`LECTURE_TABLE:${school_year}:${semester}`, JSON.stringify(retData), systemConfig.courseTableCacheTime).then(() => {
-        console.log('缓存课表成功, ', school_year, semester, '有效期', systemConfig.courseTableCacheTime, '秒' )
+        process.env.NEXT_RUNTIME === 'nodejs' && console.log('缓存课表成功, ', school_year, semester, '有效期', systemConfig.courseTableCacheTime, '秒')
     });
     return retData;
 }

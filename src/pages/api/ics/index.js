@@ -53,7 +53,7 @@ export default async function handler(req, res) {
         const filename = `${lectureTable.studentName}的${timeInfo.schoolYearMap[school_year]}${timeInfo.semesterMap[semester]}课程表.ics`;
         res.setHeader('Content-Disposition', `attachment; filename="${encodeURI(filename)}"`);
 
-        const icsObj = await generateIcsFile(lectureTable);
+        const icsObj = await generateIcsFile(lectureTable, timeInfo);
 
         // 生成失败的情况，返回错误信息
         if (icsObj.error) {
@@ -100,6 +100,7 @@ async function within(fn, res, duration, ...args) {
         clearTimeout(id)
         return data
     } catch (e) {
+        clearTimeout(id)
         throw e
     }
 }

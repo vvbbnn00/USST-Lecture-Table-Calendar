@@ -1,16 +1,18 @@
 import {createEvents, ReturnObject} from 'ics';
-import {calcDate, calcTime, dateToArray} from "@/utils/datetime";
+import DatetimeUtil from "@/utils/datetime";
 import {getTimeInformation} from "@/utils/information";
 import icsConfig from "@/config/ics.config";
 
 /**
  * 生成ics文件
  * @param data 课表数据
+ * @param timeInfo 时间信息
  * @returns {Promise<ReturnObject>}
  */
-export async function generateIcsFile(data) {
+export async function generateIcsFile(data, timeInfo) {
     const {schoolYear: schoolYear, semester: semester, lectureTable: kbData} = data;
-    const {semesterStartDateMap: SEMESTER_START_DATE_MAP} = await getTimeInformation()
+    const {semesterStartDateMap: SEMESTER_START_DATE_MAP} = timeInfo || await getTimeInformation()
+    const dt = new DatetimeUtil(timeInfo);
     const reminderOffset = icsConfig.enableReminder ? icsConfig.reminderOffset : 0;
 
     const reminderAlarm = [{
@@ -55,17 +57,17 @@ export async function generateIcsFile(data) {
         const zcArr = zc.split('-');
         const dates = [];
         for (let i = parseInt(zcArr[0]); i <= parseInt(zcArr[1]); i += step) {
-            dates.push(await calcDate(i, lecture['xqj'], baseDate));
+            dates.push(await dt.calcDate(i, lecture['xqj'], baseDate));
         }
 
-        const timeDelta = await calcTime(lecture['jcor'].split('-')[0], lecture['jcor'].split('-')[1]);
+        const timeDelta = await dt.calcTime(lecture['jcor'].split('-')[0], lecture['jcor'].split('-')[1]);
         dates.forEach(item => {
             if (item.isVacation) return;
 
             const event = {
                 productId: 'USST-Lecture-Table-Calendar',
-                start: dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.start)),
-                end: dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.end)),
+                start: dt.dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.start)),
+                end: dt.dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.end)),
                 title: lecture['kcmc'],
                 description: `[${lecture['kcxz']} ${lecture['khfsmc']}]${lecture['kclb']} - ${lecture['kcmc']} 授课老师：${lecture['xm']}`,
                 location: `${lecture['cdmc']},上海理工大学${lecture['xqmc']},上海市,中国`,
