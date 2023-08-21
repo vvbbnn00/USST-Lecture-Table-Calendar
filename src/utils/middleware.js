@@ -29,7 +29,8 @@ async function isAuthenticated(request) {
     }
 
     // 判断是否有secret_key，secret_key可以在请求头中传递，也可以在请求参数中传递
-    const secret_key = request.headers['x-secret-key'] || request.query['secret_key'];
+    const query_secretKey = request.query ? request.query['secret_key'] : (new URL(request.url)).searchParams.get('secret_key');
+    const secret_key = request.headers['x-secret-key'] || query_secretKey;
 
     // 如果secret_key不正确，且ip不为空，则进行频率限制
     if (secret_key !== systemConfig.secretKey && ip) {

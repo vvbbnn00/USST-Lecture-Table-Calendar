@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const lectureTable = await within(getCachedLectureTable, res, 9500, school_year, semester); // Vercel最大超时时间为10s，这里设置为9.5s
+        const lectureTable = await within(getCachedLectureTable, res, 9000, school_year, semester); // Vercel最大超时时间为10s，这里设置为9.5s
         if (!lectureTable) {
             res.setHeader('Content-Type', 'application/json; charset=utf-8');
             res.setHeader('Content-Disposition', 'inline');

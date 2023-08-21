@@ -20,7 +20,9 @@ import {
     Code,
     AlertDialog,
     Strong,
-    Callout
+    Callout,
+    IconButton,
+    Popover,
 } from '@radix-ui/themes';
 import {BookmarkIcon, CopyIcon, Link1Icon, LockClosedIcon, InfoCircledIcon, TrashIcon} from "@radix-ui/react-icons";
 
@@ -30,6 +32,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
     const [schoolYear, setSchoolYear] = useState(currentSchoolYear);
     const [semester, setSemester] = useState(currentSemester);
     const [latest, setLatest] = useState(true);
+    const [useStreamed, setUseStreamed] = useState(true);
     const [link, setLink] = useState('');
     const [maskedLink, setMaskedLink] = useState('');
     const [textLink, setTextLink] = useState('');
@@ -39,7 +42,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
 
     const
         handleGenerateLink = () => {
-            const baseLink = `${window.location.protocol}//${window.location.host}/api/ics`;
+            const baseLink = `${window.location.protocol}//${window.location.host}/${useStreamed ? 'streamed_api' : 'api'}/ics`;
             const params = new URLSearchParams();
             params.append('secret_key', secretKey);
             if (!latest) {
@@ -120,15 +123,15 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             onInput={(e) => {
                                 setSecretKey(e.target.value);
                             }}
-                            onKeyPressCapture={(e)=>{
-                                if(e.key==='Enter'){
+                            onKeyPressCapture={(e) => {
+                                if (e.key === 'Enter') {
                                     handleGenerateLink();
                                 }
                             }}
                         />
                     </TextField.Root>
 
-                    <Flex>
+                    <Grid columns={"2"} align={"center"} justify={"center"} gap={"3"}>
                         <Text size="2">
                             <label>
                                 <Checkbox mr="1" defaultChecked={latest} onClick={() => {
@@ -136,7 +139,39 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                                 }}/> 始终使用最新课表
                             </label>
                         </Text>
-                    </Flex>
+                        <Text size={"2"}>
+                            <label>
+                                <Flex gap="1" align="center">
+                                    <Checkbox mr="1" defaultChecked={useStreamed} onClick={() => {
+                                        setUseStreamed(!useStreamed);
+                                    }}/> 使用流式API {' '}
+
+                                    <Popover.Root>
+                                        <Popover.Trigger>
+                                            <IconButton
+                                                size={"1"}
+                                                variant={"ghost"}
+                                                color={"gray"}
+                                            >
+                                                <InfoCircledIcon width="16" height="16"/>
+                                            </IconButton>
+                                        </Popover.Trigger>
+                                        <Popover.Content style={{width: 360}}>
+                                            <Heading size={"3"}>使用流式API</Heading>
+                                            <Text size={"1"}>
+                                                根据<code>Vercel</code>官方文档，Vercel的<code>Serverless
+                                                Functions</code>有
+                                                <code>10s</code>的最大执行时间限制，因此，如果您的课表较大，可能会导致
+                                                <code>Serverless Functions</code>执行超时，从而导致请求失败。为了解决这个问题，
+                                                我们提供了<code>流式API</code>。流式API会允许执行最多<code>30s</code>，
+                                                因此，在课表较大的情况下，建议您使用流式API。
+                                            </Text>
+                                        </Popover.Content>
+                                    </Popover.Root>
+                                </Flex>
+                            </label>
+                        </Text>
+                    </Grid>
 
 
                     {!latest && (
@@ -233,7 +268,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                             onBlur={(e) => setTextLink(maskedLink)}
                             readOnly/>
                         <TextField.Slot>
-                            <Button
+                            <IconButton
                                 onClick={() => {
                                     clipboard.copy(link);
                                     toast.success('复制成功');
@@ -244,7 +279,7 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                                 className={"mr-5"}
                             >
                                 <CopyIcon height={16} width={16}></CopyIcon>
-                            </Button>
+                            </IconButton>
                         </TextField.Slot>
                     </TextField.Root>
                     <Box
@@ -267,7 +302,8 @@ export default function Home({schoolYearMap, semesterMap, currentSchoolYear, cur
                 <Separator my="3" size="4"/>
                 <Text as={"div"}>
                     Powered by{' '}
-                    <Link href="https://github.com/vvbbnn00/USST-Lecture-Table-Calendar" className="underline">USST-Lecture-Table-Calendar</Link>
+                    <Link href="https://github.com/vvbbnn00/USST-Lecture-Table-Calendar"
+                          className="underline">USST-Lecture-Table-Calendar</Link>
                 </Text>
                 <Text>
                     Made with ❤️ by{' '}

@@ -90,6 +90,7 @@ export async function getCachedLectureTable(school_year, semester){
         return JSON.parse(cacheData);
     }
     // 无缓存，重新获取
+    console.log('获取课表中, ', school_year, semester)
     let name, cookieJar, stuInfo;
     switch (loginConfig.loginMethod) {
         case 'jwgl':
@@ -105,6 +106,7 @@ export async function getCachedLectureTable(school_year, semester){
         default:
             throw new Error('未知登录方式');
     }
+    console.log('登录系统成功')
     const school_number = stuInfo['xh_id'];
     // 获取课表
     const rawLectureTable = await getRawLectureTable(school_year, semester, cookieJar);
