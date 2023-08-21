@@ -19,6 +19,7 @@ export async function getTimeInformation() {
     try {
         const res = await fetch(apiConfig.time_info, {
             cache: 'no-cache',
+            method: 'GET',
         });
         const data = await res.json()
         const retData = {

@@ -89,7 +89,7 @@ export async function GET(req) {
     }
 
     const timeInfo = await getTimeInformation();
-    let {school_year, semester} = (new URL(req.url)).searchParams;
+    let {school_year, semester} = Object.fromEntries((new URL(req.url)).searchParams);
 
     school_year = school_year || timeInfo.currentSchoolYear
     semester = semester || timeInfo.currentSemester
