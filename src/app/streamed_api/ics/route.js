@@ -19,6 +19,9 @@ function iteratorToStream(iterator, headers) {
 const encoder = new TextEncoder()
 
 async function* makeIterator(school_year, semester) {
+    // 为防止504，先返回一个空行
+    yield encoder.encode('\n')
+
     try {
         const lectureTable = await getCachedLectureTable(school_year, semester);
         if (!lectureTable) {
