@@ -66,11 +66,14 @@ class DatetimeUtil {
      * @returns {Promise<{start: number, end: number}>}
      */
     async calcTime(startKc, endKc) {
+        // console.log(startKc, endKc, this.TIME_TABLE)
         const startTimetable = this.TIME_TABLE[startKc];
         const endTimetable = this.TIME_TABLE[endKc];
 
         const start = startTimetable.split("|")[0].split(',').map(Number);
         const end = endTimetable.split("|")[1].split(',').map(Number);
+
+        // console.log(start, end)
 
         return {
             start: start[0] * 3600000 + start[1] * 60000 + start[2] * 1000,

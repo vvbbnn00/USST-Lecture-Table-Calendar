@@ -60,10 +60,13 @@ export async function generateIcsFile(data, timeInfo) {
         for (let i = parseInt(zcArr[0]); i <= parseInt(zcArr[1]); i += step) {
             dates.push(await dt.calcDate(i, lecture['xqj'], baseDate));
         }
+        // console.log(lecture['kcmc'], lecture['jcs'])
 
-        const timeDelta = await dt.calcTime(lecture['jcor'].split('-')[0], lecture['jcor'].split('-')[1]);
+        const timeDelta = await dt.calcTime(lecture['jcs'].split('-')[0], lecture['jcs'].split('-')[1]);
         dates.forEach(item => {
             if (item.isVacation) return;
+
+            // console.log(dt.dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.start)))
 
             const event = {
                 productId: 'USST-Lecture-Table-Calendar',
