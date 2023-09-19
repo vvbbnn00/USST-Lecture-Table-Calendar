@@ -26,7 +26,7 @@ class DatetimeUtil {
      * @param weekNum
      * @param weekday
      * @param baseDate
-     * @returns {Promise<{dateStr: string, adjustDate: (*|null), adjustDateParent: null, isVacation: *, datetimeObj: Date, weekNumber: number}>}
+     * @returns {Promise<{dateStr: string, adjustDate: (*|null), adjustDateParent: string, isVacation: *, datetimeObj: Date, weekNumber: number}>}
      */
     async calcDate(weekNum, weekday, baseDate) {
 
@@ -41,20 +41,13 @@ class DatetimeUtil {
         const dayDelta = (weekNum - 1) * 7 + (weekday - 1);
         const date = addDays(baseDate, dayDelta);
         const dateStr = format(date, 'yyyy-MM-dd');
-        let adjustDateParent = null;
-
-        for (let key in this.ADJUST_DATE) {
-            if (this.ADJUST_DATE[key] === dateStr) {
-                adjustDateParent = key;
-            }
-        }
 
         return {
             datetimeObj: date,
             dateStr: dateStr,
             isVacation: this.VACATION_DATE.includes(dateStr),
             adjustDate: this.ADJUST_DATE[dateStr] || null,
-            adjustDateParent: adjustDateParent,
+            adjustDateParent: dateStr,
             weekNumber: weekNum,
         };
     }

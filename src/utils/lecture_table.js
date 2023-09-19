@@ -2,6 +2,7 @@ import {createEvents, ReturnObject} from 'ics';
 import DatetimeUtil from "@/utils/datetime";
 import {getTimeInformation} from "@/utils/information";
 import icsConfig from "@/config/ics.config";
+import {format} from "date-fns";
 process.env.TZ = 'Asia/Shanghai' // 设置时区
 
 /**
@@ -65,6 +66,13 @@ export async function generateIcsFile(data, timeInfo) {
         const timeDelta = await dt.calcTime(lecture['jcs'].split('-')[0], lecture['jcs'].split('-')[1]);
         dates.forEach(item => {
             if (item.isVacation) return;
+            if (item.adjustDate) {
+                const adjustDate = new Date(item.adjustDate);
+                if (adjustDate.getTime() < baseDate.getTime()) return;
+                item.datetimeObj = adjustDate;
+                item.adjustDateParent = item.dateStr;
+                item.dateStr = format(adjustDate, 'yyyy-MM-dd');
+            }
 
             // console.log(dt.dateToArray(new Date(item.datetimeObj.getTime() + timeDelta.start)))
 
