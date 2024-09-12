@@ -71,7 +71,7 @@ export async function getRawLectureTable(school_year, semester, cookieJar) {
         credentials: 'include',
     })).json();
 
-    if (ret['kbList'] && ret['kbList'].length > 0) {
+    if (ret['kbList'] && ret['kbList'].length >= 0) {
         return ret['kbList'];
     }
 

@@ -37,3 +37,5 @@ next-env.d.ts
 .idea
 /public/date_config.json
 /src/app/streamed_api/test/
+
+.env
