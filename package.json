@@ -20,7 +20,7 @@
     "eslint": "8.47.0",
     "eslint-config-next": "13.4.18",
     "fetch-cookie": "^2.1.0",
-    "happy-dom": "^10.10.4",
+    "happy-dom": "^15.10.1",
     "ics": "^3.4.0",
     "ioredis": "^5.3.2",
     "jsdom": "^22.1.0",
